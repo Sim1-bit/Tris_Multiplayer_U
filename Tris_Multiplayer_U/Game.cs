@@ -21,7 +21,7 @@ namespace Tris_Multiplayer_U
                 get => color;
                 set
                 {
-                    color = color == null && value != null ? value : value;
+                    color = color == null || value == null ? value : color;
                     if (color == null)
                     {
                         BackColor = System.Drawing.Color.White;
@@ -48,12 +48,29 @@ namespace Tris_Multiplayer_U
                 Color = null;
             }
         }
-        public Tris_Button[,] table = new Tris_Button[3, 3];
+        public Tris_Button[,] table = new Tris_Button[0, 0];
         public Game()
         {
             InitializeComponent();
+            Clear();
+        }
+
+        public void Button_Clicked(object sender, EventArgs e)
+        {
+            if ((sender as Tris_Button).Color == null)
+                (sender as Tris_Button).Color = true;
+        }
+
+
+        public void Clear()
+        {
+            foreach(var i  in table)
+                this.Controls.Remove(i);
+
+            table = new Tris_Button[3, 3];
+
             Point aux = new Point(0, 0);
-            for(int i =0; i < table.GetLength(0); i++)
+            for (int i = 0; i < table.GetLength(0); i++)
             {
                 for (int j = 0; j < table.GetLength(1); j++)
                 {
@@ -63,12 +80,6 @@ namespace Tris_Multiplayer_U
                     this.Controls.Add(table[i, j]);
                 }
             }
-        }
-
-        public void Button_Clicked(object sender, EventArgs e)
-        {
-            if ((sender as Tris_Button).Color == null)
-                (sender as Tris_Button).Color = true;
         }
     }
 }

@@ -87,8 +87,10 @@ namespace Tris_Multiplayer_U
             {
                 sender.Connection_click = false;
 
-                
+                if (game1.Visible)
+                    game1.Clear();
                 game1.Visible = !game1.Visible;
+                
             }
         }
     }
