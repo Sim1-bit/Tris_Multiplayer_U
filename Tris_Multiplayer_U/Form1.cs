@@ -22,17 +22,10 @@ namespace Tris_Multiplayer_U
         {
             client = new Client("127.0.0.1", 1024);
             InitializeComponent();
-            Aux();
             access1.Pressed += Change_User;
             registration1.Pressed += Change_User;
             user_Info1.Pressed += Change_User;
             connection1.Pressed += Change_User;
-        }
-
-        private async void Aux()
-        {
-            inizialization.WaitAsync();
-            await client.StartAsync();
         }
 
 

@@ -29,7 +29,7 @@ namespace Tris_Multiplayer_U
         {        
             if (Form1.userAccess != null)
                 Form1.userAccess = null;
-            Form1.client = null;
+            //Form1.client = null;
             exit_click = true;
             Pressed?.Invoke(this, EventArgs.Empty);
         }

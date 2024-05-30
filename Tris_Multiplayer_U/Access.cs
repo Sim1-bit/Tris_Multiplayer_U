@@ -40,7 +40,7 @@ namespace Tris_Multiplayer_U
                 return;
             }
             Form1.client.Access(Username_tb.Text, Password_tp.Text);
-            Form1.client.accessRegistration.WaitAsync();
+            //Form1.client.accessRegistration.WaitAsync();
             if(Form1.userAccess != null)
             {
                 Access_click = true;
