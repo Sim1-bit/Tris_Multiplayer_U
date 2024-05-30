@@ -35,8 +35,17 @@ namespace Tris_Multiplayer_U
 
         private void Access_b_Click(object sender, EventArgs e)
         {
-            access_click = true;
-            Pressed?.Invoke(this, EventArgs.Empty);
+            if(Username_tb.Text.Contains(' ') || Username_tb.Text.Contains('\t') || Username_tb.Text == "" || Password_tp.Text.Contains('\t') || Password_tp.Text == "")
+            {
+                return;
+            }
+            Form1.client.Access(Username_tb.Text, Password_tp.Text);
+            Form1.client.accessRegistration.WaitAsync();
+            if(Form1.userAccess != null)
+            {
+                Access_click = true;
+                Pressed?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private void Registration_b_Click(object sender, EventArgs e)

@@ -3,105 +3,86 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Forms;
+using Microsoft.VisualBasic;
+using System.Drawing.Design;
 
 namespace Tris_Multiplayer_U
 {
     public class Client
     {
-        private TcpListener listener;
-        private TcpClient client;
-        private bool aux = true;
-        NetworkStream stream = null;
-        NetworkStream Stream
+        public SemaphoreSlim accessRegistration = new SemaphoreSlim(0);
+        public SemaphoreSlim ready = new SemaphoreSlim(0);
+        public SemaphoreSlim move = new SemaphoreSlim(0);
+
+        public NetworkStream stream;
+
+        private string jsonString;
+        private string receivedJson;
+
+        private readonly string serverIp;
+        private readonly int serverPort;
+
+        public Client(string serverIp, int serverPort)
         {
-            get
-            {
-                return stream;
-            }
-            set
-            {
-                if (stream == null)
-                {
-                    stream = value;
-                }
-            }
+            this.serverIp = serverIp;
+            this.serverPort = serverPort;
+            Form1.inizialization.Release();
         }
 
-        public Client()
+        public async Task StartAsync()
         {
-            string ipAddress = "127.0.0.1";
+            TcpClient client = new TcpClient();
+            await client.ConnectAsync(serverIp, serverPort);
 
-            client = new TcpClient(ipAddress, 53000);
-
-            Thread clientThread = new Thread(HandleCommunication);
-            clientThread.Start(client);
-        }
-        private void HandleCommunication(object obj)
-        {
-            TcpClient peer = (TcpClient)obj;
-            Stream = peer.GetStream();
+            var stream = client.GetStream();
 
             while (true)
             {
-                // Ricevi dati
-                byte[] buffer = new byte[1024];
-                int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                string receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                try
-                {
-                    bool aux = Convert.ToBoolean(receivedMessage);
-                }
-                catch (InvalidCastException)
-                {
-                    
-                }
-
-                    // Invia dati
-                    Console.Write("Inserisci il messaggio da inviare: ");
-                string messageToSend = Console.ReadLine();
-                byte[] data = Encoding.UTF8.GetBytes(messageToSend);
-                stream.Write(data, 0, data.Length);
+                Send();
+                Receive();
             }
         }
 
-        public void Access(string username, string password)
+        public async Task Send()
         {
-            NetworkStream stream = client.GetStream();
-            byte[] data = Encoding.UTF8.GetBytes(CreateHeader(username) + username + CreateHeader(password) + password);
-            stream.Write(data, 0, data.Length);
+            ready.Wait();
+            byte[] data =Encoding.UTF8.GetBytes(jsonString);
+            await stream.WriteAsync(data, 0, data.Length);
         }
-        public void SendMessage(string name, string password)
+
+        public async Task Receive()
         {
-            // Invia un messaggio a tutti i peer connessi
+            byte[] buffer = new byte[1024];
+            int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+            receivedJson = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+            try
+            {
+                Form1.userAccess = JsonSerializer.Deserialize<User>(receivedJson);
+            }
+            catch
+            {
+
+            }
             
         }
 
-        //Fa capire la lunghezza del messaghio per facilitare la lettura
-        private string CreateHeader(string message)
+        public void Access(string name, string password)
         {
-            string header = "00000";
-            while (header.Length + message.Length > 5)
-                header.Remove(0);
-            return header + message.Length.ToString();
+            jsonString = JsonSerializer.Serialize(new string[] { name, password });
+            ready.Release();
         }
-        private string DestroyHeader(ref string message)
-        {
-            string aux = message;
-            //tolgo tutti i valori affinchè mi rimanga solo l'header
-            while (aux.Length > 5)
-                aux.Remove(message.Length - 1);
-            int lenght = Convert.ToInt32(aux);
-            //Seleziono la parte di messaggio che mi interessa
-            aux = message.Substring(5, lenght + 4);
-            
-            //modifico il messaggio affinchè non ci sia più la parte che ho letto
-            message = message.Substring(lenght + 4);
 
-            //Restituisco ciò che ho letto
-            return aux;
+        public void Registration(string name, string password, string confirm)
+        {
+            jsonString = JsonSerializer.Serialize(new string[] { name, password, confirm });
+            ready.Release();
         }
     }
 }

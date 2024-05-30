@@ -10,35 +10,6 @@ using System.Windows.Forms;
 
 namespace Tris_Multiplayer_U
 {
-    public class User
-    {
-        public readonly string Username;
-        public readonly string Password;
-
-        private int win;
-        public int Win
-        {
-            get => win;
-            set => win = value >= 0 ? value : 0;
-        }
-        private int lose;
-        public int Lose
-        {
-            get => lose;
-            set => lose = value >= 0 ? value : 0;
-        }
-        private int tie;
-        public int Tie
-        {
-            get => tie;
-            set => tie = value >= 0 ? value : 0;
-        }
-
-        public User() 
-        {
-
-        }
-    }
     public partial class User_Info : UserControl
     {
         public event EventHandler Pressed;
@@ -55,7 +26,10 @@ namespace Tris_Multiplayer_U
         }
 
         private void Exit_b_Click(object sender, EventArgs e)
-        {
+        {        
+            if (Form1.userAccess != null)
+                Form1.userAccess = null;
+            Form1.client = null;
             exit_click = true;
             Pressed?.Invoke(this, EventArgs.Empty);
         }
