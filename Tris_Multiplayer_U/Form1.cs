@@ -16,8 +16,6 @@ namespace Tris_Multiplayer_U
         public static User userAccess = null;
         public static Client client = null;
 
-        public static SemaphoreSlim inizialization = new SemaphoreSlim(0);
-
         public Form1()
         {
             client = new Client("127.0.0.1", 1024);
@@ -52,6 +50,7 @@ namespace Tris_Multiplayer_U
                 sender.Visible = false;
 
                 user_Info1.Visible = true;
+                user_Info1.Update();
                 connection1.Visible = true;
             }
             else if (sender.Registration_click)
@@ -72,6 +71,7 @@ namespace Tris_Multiplayer_U
                 sender.Visible = false;
 
                 user_Info1.Visible = true;
+                user_Info1.Update();
                 connection1.Visible = true;
             }
         }

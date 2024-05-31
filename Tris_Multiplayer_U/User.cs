@@ -35,6 +35,25 @@ namespace Tris_Multiplayer_U
         {
 
         }
+
+        public User(string name, string password)
+        {
+            this.Username = name;
+            this.Password = password;
+            Win = 0;
+            Lose = 0;
+            Tie = 0;
+        }
+
+        public User(string name, string password, int win, int lose, int tie)
+        {
+            this.Username = name;
+            this.Password = password;
+            Win = win;
+            Lose = lose;
+            Tie = tie;
+        }
+
         public User(User aux)
         {
             Username = aux.Username;
@@ -42,6 +61,20 @@ namespace Tris_Multiplayer_U
             Win = aux.Win;
             Lose = aux.Lose;
             Tie = aux.Tie;
+        }
+
+        public User(string[] aux)
+        {
+            Username = aux[0];
+            Password = aux[1];
+            Win = Convert.ToInt32(aux[2]);
+            Lose = Convert.ToInt32(aux[3]);
+            Tie = Convert.ToInt32(aux[4]);
+        }
+
+        public bool IsAux
+        {
+            get => Username == "";
         }
     }
 }

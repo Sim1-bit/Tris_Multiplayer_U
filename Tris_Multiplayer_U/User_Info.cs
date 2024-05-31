@@ -33,5 +33,13 @@ namespace Tris_Multiplayer_U
             exit_click = true;
             Pressed?.Invoke(this, EventArgs.Empty);
         }
+
+        public void Update()
+        {
+            name_l.Text = Form1.userAccess.Username;
+            win_label.Text = Form1.userAccess.Win.ToString();
+            lose_labe.Text = Form1.userAccess.Lose.ToString();
+            tie_label.Text = Form1.userAccess.Tie.ToString();
+        }
     }
 }

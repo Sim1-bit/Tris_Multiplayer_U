@@ -42,7 +42,7 @@ namespace Tris_Multiplayer_U
             byte[] buffer = new byte[1024];
             int bytesRead = client.GetStream().Read(buffer, 0, buffer.Length);
             string receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-            Form1.userAccess = JsonSerializer.Deserialize<User>(receivedMessage);
+            Form1.userAccess = new User(JsonSerializer.Deserialize<string[]>(receivedMessage));
         }
         public void Registration(string name, string password, string confirm)
         {
@@ -53,7 +53,7 @@ namespace Tris_Multiplayer_U
             byte[] buffer = new byte[1024];
             int bytesRead = client.GetStream().Read(buffer, 0, buffer.Length);
             string receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-            Form1.userAccess = JsonSerializer.Deserialize<User>(receivedMessage);
+            Form1.userAccess = new User(JsonSerializer.Deserialize<string[]>(receivedMessage));
         }
     }
 }

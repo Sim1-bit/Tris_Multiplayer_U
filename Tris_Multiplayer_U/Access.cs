@@ -40,12 +40,12 @@ namespace Tris_Multiplayer_U
                 return;
             }
             Form1.client.Access(Username_tb.Text, Password_tp.Text);
-            //Form1.client.accessRegistration.WaitAsync();
-            if(Form1.userAccess != null)
-            {
-                Access_click = true;
-                Pressed?.Invoke(this, EventArgs.Empty);
-            }
+            MessageBox.Show((Form1.userAccess.Username is null).ToString());
+            MessageBox.Show(Form1.userAccess.IsAux.ToString());
+            if (Form1.userAccess.IsAux)
+                return;
+            Access_click = true;
+            Pressed?.Invoke(this, EventArgs.Empty);
         }
 
         private void Registration_b_Click(object sender, EventArgs e)

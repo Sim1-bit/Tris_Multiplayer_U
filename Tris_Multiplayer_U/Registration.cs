@@ -31,13 +31,13 @@ namespace Tris_Multiplayer_U
             {
                 return;
             }
+            MessageBox.Show(Form1.userAccess.Username);
+            MessageBox.Show(Form1.userAccess.IsAux.ToString());
             Form1.client.Registration(Username_tb.Text, Password_tp.Text, Password_tp1.Text);
-            Form1.client.accessRegistration.WaitAsync();
-            if (Form1.userAccess != null)
-            {
-                Registration_click = true;
-                Pressed?.Invoke(this, EventArgs.Empty);
-            }        
+            if (Form1.userAccess.IsAux)
+                return;
+            Registration_click = true;
+            Pressed?.Invoke(this, EventArgs.Empty);
         }
     }
 }
