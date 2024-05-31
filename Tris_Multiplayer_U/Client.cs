@@ -55,55 +55,5 @@ namespace Tris_Multiplayer_U
             string receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
             Form1.userAccess = JsonSerializer.Deserialize<User>(receivedMessage);
         }
-
-        /*public async Task StartAsync()
-        {
-            TcpClient client = new TcpClient();
-            await client.ConnectAsync(serverIp, serverPort);
-
-            var stream = client.GetStream();
-
-            while (true)
-            {
-                Send();
-                Receive();
-            }
-        }
-
-        public async Task Send()
-        {
-            ready.Wait();
-            byte[] data =Encoding.UTF8.GetBytes(jsonString);
-            await stream.WriteAsync(data, 0, data.Length);
-        }
-
-        public async Task Receive()
-        {
-            byte[] buffer = new byte[1024];
-            int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-            receivedJson = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-
-            try
-            {
-                Form1.userAccess = JsonSerializer.Deserialize<User>(receivedJson);
-            }
-            catch
-            {
-
-            }
-            
-        }
-
-        public void Access(string name, string password)
-        {
-            jsonString = JsonSerializer.Serialize(new string[] { name, password });
-            ready.Release();
-        }
-
-        public void Registration(string name, string password, string confirm)
-        {
-            jsonString = JsonSerializer.Serialize(new string[] { name, password, confirm });
-            ready.Release();
-        }*/
     }
 }
