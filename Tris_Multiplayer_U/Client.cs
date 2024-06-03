@@ -38,6 +38,21 @@ namespace Tris_Multiplayer_U
         {
             serverPort = serverPort == serverAccount ? serverGame : serverAccount;
             client = new TcpClient(this.serverIp, this.serverPort);
+
+            byte[] buffer = new byte[1024];
+            int bytesRead = client.GetStream().Read(buffer, 0, buffer.Length);
+            string receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            Game.Turn = JsonSerializer.Deserialize<bool>(receivedMessage);
+
+            if(!Game.Turn)
+            {
+                buffer = new byte[1024];
+                bytesRead = client.GetStream().Read(buffer, 0, buffer.Length);
+                receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                var aux = JsonSerializer.Deserialize<int[]>(receivedMessage);
+                Form1.game.ChangeColor(aux[0], aux[1]);
+            }
+
             return serverPort == serverAccount;
         }
 

@@ -13,17 +13,19 @@ namespace Tris_Multiplayer_U
 {
     public partial class Form1 : Form
     {
+        public static Game game;
         public static User userAccess = null;
         public static Client client = null;
 
         public Form1()
         {
-            client = new Client("127.0.0.1", true);
             InitializeComponent();
             access1.Pressed += Change_User;
             registration1.Pressed += Change_User;
             user_Info1.Pressed += Change_User;
             connection1.Pressed += Change_User;
+            client = new Client("127.0.0.1", true);
+            game = game1;
         }
 
 

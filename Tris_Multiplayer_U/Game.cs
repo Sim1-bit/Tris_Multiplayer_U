@@ -13,6 +13,7 @@ namespace Tris_Multiplayer_U
 {
     public partial class Game : UserControl
     {
+        public static bool Turn;
         public class Tris_Button : Button
         {
             private bool? color;
@@ -59,21 +60,27 @@ namespace Tris_Multiplayer_U
         {
             if ((sender as Tris_Button).Color == null)
                 (sender as Tris_Button).Color = true;
-
+            else
+                return;
+            //Cerco gli indici
             for (int i = 0; i < table.GetLength(0); i++)
             {
-                for(int j = 0; j < table.GetLength(1); j++)
+                for (int j = 0; j < table.GetLength(1); j++)
                 {
-                    if(table[i, j] == sender as Tris_Button)
+                    if (table[i, j] == sender)
                     {
                         var aux = Form1.client.Move(i, j);
-                        table[aux[0], aux[1]].Color = false;
+                        ChangeColor(aux[0], aux[1]);
                         return;
                     }
                 }
             }
         }
 
+        public void ChangeColor(int x, int y)
+        {
+            table[x, y].Color = false;
+        }
 
         public void Clear()
         {
