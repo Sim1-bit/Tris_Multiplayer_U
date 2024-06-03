@@ -27,6 +27,7 @@ namespace Tris_Multiplayer_U
         private void connection_b_Click(object sender, EventArgs e)
         {
             Connection_click = true;
+            Form1.client.SwitchPort();
             Pressed?.Invoke(this, EventArgs.Empty);
         }
     }

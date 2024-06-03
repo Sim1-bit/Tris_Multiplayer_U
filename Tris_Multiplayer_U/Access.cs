@@ -40,8 +40,6 @@ namespace Tris_Multiplayer_U
                 return;
             }
             Form1.client.Access(Username_tb.Text, Password_tp.Text);
-            MessageBox.Show((Form1.userAccess.Username is null).ToString());
-            MessageBox.Show(Form1.userAccess.IsAux.ToString());
             if (Form1.userAccess.IsAux)
                 return;
             Access_click = true;

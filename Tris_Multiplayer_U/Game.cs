@@ -59,6 +59,19 @@ namespace Tris_Multiplayer_U
         {
             if ((sender as Tris_Button).Color == null)
                 (sender as Tris_Button).Color = true;
+
+            for (int i = 0; i < table.GetLength(0); i++)
+            {
+                for(int j = 0; j < table.GetLength(1); j++)
+                {
+                    if(table[i, j] == sender as Tris_Button)
+                    {
+                        var aux = Form1.client.Move(i, j);
+                        table[aux[0], aux[1]].Color = false;
+                        return;
+                    }
+                }
+            }
         }
 
 

@@ -18,7 +18,7 @@ namespace Tris_Multiplayer_U
 
         public Form1()
         {
-            client = new Client("127.0.0.1", 1024);
+            client = new Client("127.0.0.1", true);
             InitializeComponent();
             access1.Pressed += Change_User;
             registration1.Pressed += Change_User;
