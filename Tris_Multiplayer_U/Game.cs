@@ -69,8 +69,13 @@ namespace Tris_Multiplayer_U
                 {
                     if (table[i, j] == sender)
                     {
-                        var aux = Form1.client.Move(i, j);
-                        ChangeColor(aux[0], aux[1]);
+                        object aux = Form1.client.Move(i, j);
+                        if ((aux as int[]) != null)
+                        {
+                            ChangeColor((aux as int[])[0], (aux as int[])[1]);
+                        }
+                        else
+                            MessageBox.Show((aux as bool?).ToString());
                         return;
                     }
                 }

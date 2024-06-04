@@ -85,7 +85,7 @@ namespace Tris_Multiplayer_U
             Form1.userAccess = new User(JsonSerializer.Deserialize<string[]>(receivedMessage));
         }
 
-        public int[] Move(int x, int y)
+        public object Move(int x, int y)
         {
             if (serverPort != serverGame)
                 return null;
@@ -97,8 +97,17 @@ namespace Tris_Multiplayer_U
             byte[] buffer = new byte[1024];
             int bytesRead = client.GetStream().Read(buffer, 0, buffer.Length);
             string receivedMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            object aux;
+            try
+            {
+                aux = JsonSerializer.Deserialize<int[]>(receivedMessage);
+            }
+            catch (InvalidCastException)
+            {
+                aux = JsonSerializer.Deserialize<bool>(receivedMessage);
+            }
 
-            return JsonSerializer.Deserialize<int[]>(receivedMessage);
+            return aux;
         }
     }
 }
